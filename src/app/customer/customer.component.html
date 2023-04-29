@@ -2,9 +2,6 @@
   <span>
     Clientes
   </span>
-  <span *ngIf="success">
-    Cliente cadastrado com sucesso!
-  </span>
 </mat-toolbar>
 <form #customerForm="ngForm" (ngSubmit)="onSubmit()">
   <mat-form-field class="full-width">
@@ -21,7 +18,7 @@
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>Data de Nascimento: </mat-label>
-    <input type="date" matInput placeholder="Digite sua data de nascimento" [(ngModel)]="customer.birthdateCustomer" name="birthdateCustomer"/>
+    <input type="date" matInput placeholder="Digite sua data de nascimento" [(ngModel)]="customer.birthdateCustomer" name="birthdateCustomer" />
   </mat-form-field>
   <mat-form-field class="full-width">
     <mat-label>Renda Mensal: R$ </mat-label>
