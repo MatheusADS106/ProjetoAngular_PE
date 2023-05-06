@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { CustomerService } from 'src/app/customer.service';
-import { Customer } from './customer';
-import { formatDate } from '@angular/common';
+import { CustomerService } from '../service/customer.service';
+import { Customer } from '../model/customer';
+import { DatePipe } from '@angular/common';
 import { NgToastService } from 'ng-angular-popup';
 
 @Component({
@@ -9,25 +9,35 @@ import { NgToastService } from 'ng-angular-popup';
   templateUrl: './customer.component.html',
   styleUrls: ['./customer.component.css']
 })
-export class CustomerComponent {
-  customer!: Customer;
 
-  constructor(private service: CustomerService, private toast: NgToastService) {
-    this.customer = new Customer();
+export class CustomerComponent {
+  customer: Customer = {
+    idCustomer: '',
+    firstNameCustomer: '',
+    lastNameCustomer: '',
+    cpfCustomer: '',
+    birthdateCustomer: '',
+    dateCreatedCustomer: '',
+    monthlyIncomeCustomer: '',
+    statusCustomer: true,
+    emailCustomer: '',
+    passwordCustomer: ''
   }
 
+  constructor(private service: CustomerService, private toast: NgToastService) { }
+
   onSubmit() {
+    const datepipe = new DatePipe("pt-BR");
     try {
-      this.customer.birthdateCustomer = formatDate(this.customer.birthdateCustomer, "dd/MM/yyy", "en-US");
+      this.customer.birthdateCustomer = datepipe.transform(this.customer.birthdateCustomer, "dd/MM/yyyy");
     } catch {
-      this.toast.error({detail: "Erro", summary: `Erro ao cadastrar cliente!`});
+      this.toast.error({ detail: "Erro", summary: `Erro ao cadastrar cliente!` });
     }
     this.service.save(this.customer).subscribe(response => {
-      this.customer = new Customer();
-      this.toast.success({detail: "Sucesso", summary: "Cliente cadastrado com sucesso!"});
+      this.toast.success({ detail: "Sucesso", summary: "Cliente cadastrado com sucesso!" });
     }, errorResponse => {
-      this.customer.birthdateCustomer = formatDate(this.customer.birthdateCustomer, "yyyy-MM-dd", "en-US");
-      this.toast.error({detail: "Erro", summary: `Erro ao cadastrar cliente!`});
+      this.toast.error({ detail: "Erro", summary: `Erro ao cadastrar cliente!` });
     });
+    this.customer.birthdateCustomer = datepipe.transform(this.customer.birthdateCustomer, "yyyy-dd-MM");
   }
 }
