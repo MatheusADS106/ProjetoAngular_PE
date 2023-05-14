@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span>
-    Clientes
+    Cliente
   </span>
 </mat-toolbar>
 <form #customerForm="ngForm" (ngSubmit)="onSubmit()">
@@ -24,6 +24,11 @@
     <mat-label>Renda Mensal: R$ </mat-label>
     <input type="number" matInput placeholder="Digite sua renda mensal (R$)" [(ngModel)]="customer.monthlyIncomeCustomer" name="monthlyIncomeCustomer" required/>
   </mat-form-field>
+  <mat-radio-group class="full-width" [(ngModel)]="customer.statusCustomer" name="statusCustomer">
+    <label>Selecione uma opção</label>
+    <mat-radio-button [value]="true" checked>Ativo</mat-radio-button>
+    <mat-radio-button [value]="false">Inativo</mat-radio-button>
+  </mat-radio-group>
   <mat-form-field class="full-width">
     <mat-label>Email: </mat-label>
     <input type="email" matInput placeholder="Digite seu email" [(ngModel)]="customer.emailCustomer" name="emailCustomer" required/>
@@ -32,5 +37,6 @@
     <mat-label>Senha: </mat-label>
     <input type="password" matInput placeholder="Digite sua senha" [(ngModel)]="customer.passwordCustomer" name="passwordCustomer" required/>
   </mat-form-field>
-  <button mat-stroked-button color="primary">Salvar</button>
+  <button mat-stroked-button color="primary">Salvar</button>&nbsp;
+  <button routerLink="/" mat-raised-button color="primary">Voltar</button>
 </form>

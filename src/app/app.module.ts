@@ -5,10 +5,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTableModule } from '@angular/material/table';
+import { MatRadioModule } from '@angular/material/radio';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerComponent } from './customer/customer.component';
+import { CustomerFormComponent } from './customer/customer-form/customerForm.component';
+import { CustomerListComponent } from './customer/customer-list/customerList.component';
 import { CustomerService } from './service/customer.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -20,7 +23,8 @@ registerLocaleData(localePt);
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerComponent
+    CustomerFormComponent,
+    CustomerListComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +34,8 @@ registerLocaleData(localePt);
     MatSlideToggleModule,
     MatButtonModule,
     MatDividerModule,
+    MatTableModule,
+    MatRadioModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
