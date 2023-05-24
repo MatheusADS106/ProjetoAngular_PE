@@ -67,12 +67,14 @@ export class CustomerFormComponent implements OnInit {
   }
 
   delete(idCustomer : any) : void {
-    this.service.delete(idCustomer).subscribe(response => {
-      this.findAll();
-      this.toast.success({ detail: "Sucesso", summary: `Cliente excluído com sucesso!` });
-    }, errorResponse => {
-      this.toast.error({ detail: "Erro", summary: `Erro ao excluir cliente!` });
-    })
+    if(window.confirm("Deseja realmente excluir este cliente?")) {
+      this.service.delete(idCustomer).subscribe(response => {
+        this.findAll();
+        this.toast.success({ detail: "Sucesso", summary: `Cliente excluído com sucesso!` });
+      }, errorResponse => {
+        this.toast.error({ detail: "Erro", summary: `Erro ao excluir cliente!` });
+      })
+    }
   }
 
   findAll() {
