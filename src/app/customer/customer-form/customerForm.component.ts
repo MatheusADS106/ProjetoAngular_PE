@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CustomerService } from '../../service/customer.service';
 import { Customer } from '../../model/customer';
 import { DatePipe } from '@angular/common';
 import { NgToastService } from 'ng-angular-popup';
-import { ActivatedRoute } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-form',
@@ -11,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./customerForm.component.css']
 })
 
-export class CustomerFormComponent implements OnInit {
+export class CustomerFormComponent implements AfterViewInit, OnInit {
   customer: Customer = {
     idCustomer: '',
     firstNameCustomer: '',
@@ -25,25 +27,28 @@ export class CustomerFormComponent implements OnInit {
     passwordCustomer: ''
   }
 
-  customers?: Customer[];
-
   indice: number = 0;
+
+  customers = new MatTableDataSource<Customer>();
+
+  @ViewChild(MatPaginator) paginator! : MatPaginator;
+  @ViewChild('customerForm') form! : NgForm;
 
   displayedColumns: String[] = ['idCustomer', 'firstNameCustomer', 'lastNameCustomer', 'cpfCustomer', 'birthdateCustomer', 'dateCreatedCustomer', 'monthlyIncomeCustomer', 'statusCustomer', 'emailCustomer', 'actions'];
 
-  constructor(private service: CustomerService, private toast: NgToastService, private activatedRoute: ActivatedRoute) { }
+  constructor(private service: CustomerService, private toast: NgToastService) { }
 
   ngOnInit(): void {
     this.findAll();
   }
 
+  ngAfterViewInit(): void {
+    this.customers.paginator = this.paginator;
+  }
+
   onSubmit() {
-    const datepipe = new DatePipe("en-US");
-    try {
-      this.customer.birthdateCustomer = datepipe.transform(this.customer.birthdateCustomer, "dd/MM/yyyy");
-    } catch {
-      this.toast.error({ detail: "Erro", summary: `Erro ao cadastrar cliente!` });
-    }
+    const datepipe = new DatePipe("pt-BR");
+    this.customer.birthdateCustomer = datepipe.transform(this.customer.birthdateCustomer, "dd/MM/yyyy");
     if(this.customer.idCustomer) {
       this.service.update(this.customer).subscribe(response => {
         this.indice = 0;
@@ -79,7 +84,7 @@ export class CustomerFormComponent implements OnInit {
 
   findAll() {
     this.service.findAll().subscribe(response => {
-      this.customers = response.result;
+      this.customers.data = response.result;
     }, errorResponse => {
       this.toast.error({ detail: "Erro", summary: `Erro ao listar clientes!` });
     })
@@ -87,9 +92,10 @@ export class CustomerFormComponent implements OnInit {
 
   findCustomer(idCustomer: any): void {
     this.service.findCustomer(idCustomer).subscribe(response => {
-      const datepipe = new DatePipe("en-US");
       this.customer = response.result;
-      this.customer.birthdateCustomer = datepipe.transform(this.customer.birthdateCustomer, "yyyy-dd-MM");
+      var date = this.customer.birthdateCustomer;
+      var newDate = date.split("/").reverse().join("-");
+      this.customer.birthdateCustomer = newDate;
       this.indice = 1;
     }, errorResponse => {
       this.toast.error({ detail: "Erro", summary: `Erro ao consultar cliente!` });
@@ -97,17 +103,7 @@ export class CustomerFormComponent implements OnInit {
   }
 
   emptyForm(): void {
-    this.customer = {
-      idCustomer: '',
-      firstNameCustomer: '',
-      lastNameCustomer: '',
-      cpfCustomer: '',
-      birthdateCustomer: '',
-      dateCreatedCustomer: '',
-      monthlyIncomeCustomer: '',
-      statusCustomer: true,
-      emailCustomer: '',
-      passwordCustomer: ''
-    }
+    this.form.resetForm();
+    this.form.controls['statusCustomer'].setValue(true);
   }
 }

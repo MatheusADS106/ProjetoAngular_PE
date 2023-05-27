@@ -10,7 +10,7 @@
       <mat-icon>list</mat-icon>
       Lista de clientes
     </ng-template>
-    <table mat-table [dataSource]="customers!">
+    <table mat-table [dataSource]="customers">
       <ng-container matColumnDef="idCustomer">
         <th mat-header-cell *matHeaderCellDef>ID</th>
         <td mat-cell *matCellDef="let customer">{{ customer.idCustomer }}</td>
@@ -41,7 +41,9 @@
       </ng-container>
       <ng-container matColumnDef="statusCustomer">
         <th mat-header-cell *matHeaderCellDef>Status</th>
-        <td mat-cell *matCellDef="let customer">{{ customer.statusCustomer ? "Ativo" : "Inativo" }}</td>
+        <td mat-cell *matCellDef="let customer"><mat-icon *ngIf="customer.statusCustomer"
+            [ngStyle]="{'color': 'green'}">done</mat-icon><mat-icon *ngIf="!customer.statusCustomer"
+            [ngStyle]="{'color': 'red'}">close</mat-icon></td>
       </ng-container>
       <ng-container matColumnDef="emailCustomer">
         <th mat-header-cell *matHeaderCellDef>E-mail</th>
@@ -49,8 +51,10 @@
       </ng-container>
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Ações</th>
-        <td mat-cell *matCellDef="let customer"><button mat-raised-button color="primary" (click)="findCustomer(customer.idCustomer)"><mat-icon>edit</mat-icon>Alterar</button>
-        &nbsp;<button mat-raised-button color="warn" (click)="delete(customer.idCustomer)"><mat-icon>delete_outline</mat-icon>Excluir</button></td>
+        <td mat-cell *matCellDef="let customer"><button mat-raised-button color="primary"
+            (click)="findCustomer(customer.idCustomer)"><mat-icon>edit</mat-icon>Alterar</button>
+          &nbsp;<button mat-raised-button color="warn"
+            (click)="delete(customer.idCustomer)"><mat-icon>delete_outline</mat-icon>Excluir</button></td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -65,23 +69,28 @@
     <form #customerForm="ngForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="full-width">
         <mat-label>Primeiro Nome: </mat-label>
-        <input type="text" matInput placeholder="Digite seu primeiro nome" [(ngModel)]="customer.firstNameCustomer" name="firstNameCustomer" required/>
+        <input type="text" matInput placeholder="Digite seu primeiro nome" [(ngModel)]="customer.firstNameCustomer"
+          name="firstNameCustomer" required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Último Nome: </mat-label>
-        <input type="text" matInput placeholder="Digite seu último nome" [(ngModel)]="customer.lastNameCustomer" name="lastNameCustomer" required/>
+        <input type="text" matInput placeholder="Digite seu último nome" [(ngModel)]="customer.lastNameCustomer"
+          name="lastNameCustomer" required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>CPF: </mat-label>
-        <input type="text" matInput placeholder="Digite seu CPF" [(ngModel)]="customer.cpfCustomer" name="cpfCustomer" required/>
+        <input type="text" matInput placeholder="Digite seu CPF" [(ngModel)]="customer.cpfCustomer" name="cpfCustomer"
+          required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Data de Nascimento: </mat-label>
-        <input type="date" matInput placeholder="Digite sua data de nascimento" [(ngModel)]="customer.birthdateCustomer" name="birthdateCustomer" required/>
+        <input type="date" matInput placeholder="Digite sua data de nascimento" [(ngModel)]="customer.birthdateCustomer"
+          name="birthdateCustomer" required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Renda Mensal: R$ </mat-label>
-        <input type="number" matInput placeholder="Digite sua renda mensal (R$)" [(ngModel)]="customer.monthlyIncomeCustomer" name="monthlyIncomeCustomer" required/>
+        <input type="number" matInput placeholder="Digite sua renda mensal (R$)"
+          [(ngModel)]="customer.monthlyIncomeCustomer" name="monthlyIncomeCustomer" required />
       </mat-form-field>
       <mat-radio-group class="full-width" [(ngModel)]="customer.statusCustomer" name="statusCustomer">
         <label>Selecione uma opção</label>
@@ -90,13 +99,18 @@
       </mat-radio-group>
       <mat-form-field class="full-width">
         <mat-label>Email: </mat-label>
-        <input type="email" matInput placeholder="Digite seu email" [(ngModel)]="customer.emailCustomer" name="emailCustomer" required/>
+        <input type="email" matInput placeholder="Digite seu email" [(ngModel)]="customer.emailCustomer"
+          name="emailCustomer" required />
       </mat-form-field>
       <mat-form-field class="full-width">
         <mat-label>Senha: </mat-label>
-        <input type="password" matInput placeholder="Digite sua senha" [(ngModel)]="customer.passwordCustomer" name="passwordCustomer" required/>
+        <input type="password" matInput placeholder="Digite sua senha" [(ngModel)]="customer.passwordCustomer"
+          name="passwordCustomer" required />
       </mat-form-field>
-      <button mat-stroked-button color="primary"><mat-icon>save</mat-icon>Salvar</button>
+      <ng-container>
+        <button mat-stroked-button color="primary" type="submit"><mat-icon>save</mat-icon>Salvar</button>&nbsp;
+        <button mat-stroked-button color="warn" type="button" (click)="emptyForm()"><mat-icon>delete</mat-icon>Limpar campos</button>
+      </ng-container>
     </form>
   </mat-tab>
 </mat-tab-group>
