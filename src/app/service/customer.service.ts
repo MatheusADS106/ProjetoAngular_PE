@@ -1,4 +1,3 @@
-//criar metodos api //
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from '../model/customer';

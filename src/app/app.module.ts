@@ -11,10 +11,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerFormComponent } from './customer/customer-form/customerForm.component';
+import { Pages } from './pages/pages.component';
 import { CustomerService } from './service/customer.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,7 +27,7 @@ registerLocaleData(localePt);
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerFormComponent,
+    Pages,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +43,7 @@ registerLocaleData(localePt);
     MatIconModule,
     MatCardModule,
     MatPaginatorModule,
+    MatSelectModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
